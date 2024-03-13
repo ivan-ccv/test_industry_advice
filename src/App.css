@@ -1,0 +1,52 @@
+.body {
+  font-family: "Roboto", sans-serif;
+}
+.fade-enter-left {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+.fade-enter-right {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.fade-enter-active {
+  opacity: 1;
+  transform: translateX(0%);
+  transition: opacity 400ms, transform 400ms;
+}
+
+.fade-exit-left {
+  opacity: 0;
+  transform: translateX(-100%);
+  transition: opacity 400ms, transform 400ms; /* Apply transition properties */
+}
+
+.fade-exit-right {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.fade-exit-active {
+  opacity: 0;
+  transition: opacity 400ms 400ms, transform 400ms 400ms; /* Delay exit transition */
+}
+
+.progress-bar-container {
+  width: 300px; /* Adjust the width as per your design */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.progress-bar {
+  height: 20px;
+  background-color: #007bff; /* Change the color as per your design */
+  border-radius: 5px;
+}
+
+.progress-text {
+  text-align: center;
+  padding: 5px 0;
+}
