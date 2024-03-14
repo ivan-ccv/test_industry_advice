@@ -353,7 +353,7 @@ function App() {
       <Header />
       <div className='triangle'></div>
       <div className='flex flex-col m-auto max-w-2xl font-["Roboto"] mb-32 md:p-0 p-3'>
-        <div className='flex mb-5 mt-10 mx-auto'>
+        <div className='flex mb-5 mt-5 md:mt-10 mx-auto'>
           <img
             className='rounded-full h-20 w-20'
             width='72'
@@ -393,13 +393,13 @@ function App() {
 
         <ProgressBar currentStep={stepBre} totalSteps={tmpData.length - 1} />
         {stepBre === 0 && (
-          <p className='text-black text-2xl font-bold mx-auto mb-5'>
+          <p className='text-black text-lg md:text-2xl font-bold mx-auto mb-5'>
             {tmpData[stepBre].question}
           </p>
         )}
         <div
-          style={{ height: `${numberOfFields ? numberOfFields * 70 : 200}px` }}
-          className={` bac overflow-hidden relative min-h-[200px] min-w-[300px] transition-[height] duration-300 ease-in-out`}
+          style={{ height: `${numberOfFields ? numberOfFields * 65 : 200}px` }}
+          className={` bac overflow-hidden relative md:min-h-[200px] min-h-[100px] min-w-[300px] transition-[height] duration-300 ease-in-out`}
         >
           <TransitionGroup>
             <CSSTransition

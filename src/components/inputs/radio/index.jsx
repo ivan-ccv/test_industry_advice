@@ -54,7 +54,7 @@ const RadioInput = ({
         {answers.map((answer, index) => (
           <label
             key={index}
-            className='p-3 border bg-[#f9f9f9] font-bold border-gray-300 mb-3 rounded-md w-full inline-flex items-center cursor-pointer hover:shadow-md accent-[#5ec2e6] hover:border-[#5EC2E6] transition-all  has-[:checked]:border-[#5EC2E6] has-[:checked]:bg-blue-50 '
+            className='p-3 px-5 border text-[#000000de] bg-[#f9f9f9] font-bold text-[15px] border-[#C6C6C6] mb-3 rounded-[4px] w-full inline-flex items-center cursor-pointer ease-in-out duration-300 shadow-custom hover:shadow-custom_hover accent-[#5ec2e6] hover:border-[#5EC2E6] transition-all  has-[:checked]:border-[#5EC2E6] has-[:checked]:bg-blue-50 has-[:checked]:shadow-custom'
           >
             <input
               type='radio'
@@ -66,12 +66,12 @@ const RadioInput = ({
             <div
               className={`${
                 selectedAnswer === answersValues[index]
-                  ? "h-5 w-5 bg-white  border-[#5ec2e6] border-2 rounded-full mr-3  flex items-center justify-center"
-                  : "h-5 w-5 bg-white border border-gray-400 rounded-full mr-3"
+                  ? "h-6 w-6 bg-white  border-[#5ec2e6] border-2 rounded-full mr-4  flex items-center justify-center"
+                  : "h-6 w-6 bg-white border border-[#C6C6C6] rounded-full mr-4"
               }`}
             >
               {selectedAnswer === answersValues[index] && (
-                <div className='h-3 w-3 bg-[#5ec2e6] rounded-full'></div>
+                <div className='h-4 w-4 bg-[#5ec2e6] rounded-full'></div>
               )}
             </div>
             {answer}

@@ -55,7 +55,7 @@ const MultiSelectInput = ({
       <div>
         {options.map((option, index) => (
           <div key={index} className='w-full'>
-            <label className='p-3 border bg-[#f9f9f9] font-bold border-gray-300 mb-3 rounded-md w-full inline-flex items-center cursor-pointer hover:shadow-md accent-[#5ec2e6] hover:border-[#5EC2E6] transition-all checked:bg-[#5EC2E6] has-[:checked]:border-[#5EC2E6] has-[:checked]:bg-blue-50'>
+            <label className='p-3 border h-[48px] bg-[#f9f9f9] font-bold border-gray-300 mb-3 rounded-md w-full inline-flex items-center cursor-pointer hover:shadow-md accent-[#5ec2e6] hover:border-[#5EC2E6] transition-all checked:bg-[#5EC2E6] has-[:checked]:border-[#5EC2E6] has-[:checked]:bg-blue-50'>
               <input
                 type='checkbox'
                 value={optionValues[index]} // Use either provided values or options
