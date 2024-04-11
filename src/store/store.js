@@ -1,5 +1,5 @@
 import { create } from "zustand";
-
+import { formOneData, formTwoData, formThreeData } from "./data";
 function createValidityArray(tmpDataLength) {
   // Create an empty array
   const array = [];
@@ -24,6 +24,80 @@ function createValuesArray(tmpDataLength) {
   // Return the populated array
   return array;
 }
+
+const validationArray = createValidityArray(formOneData.length);
+const valuesArray = createValuesArray(formOneData.length);
+
+export const useStore = create((set) => ({
+  step: 0,
+  questionVersion: null,
+  selectedForm: null,
+  currentValue: null,
+  previousStep: 0,
+  validationArray: validationArray,
+  valuesArray: valuesArray,
+
+  logValidationArray: () => {
+    const state = useStore.getState();
+    console.log("Validation Array:", state.validationArray);
+  },
+  logValuesArray: () => {
+    const state = useStore.getState();
+    console.log("Values Array:", state.valuesArray);
+  },
+
+  setQuestionVersion: (newVersion) =>
+    set(() => ({
+      questionVersion: newVersion,
+    })),
+  goToNextStep: () =>
+    set((state) => ({
+      previousStep: state.step, // Update previousStep
+      step: state.step + 1,
+    })),
+  goToPrevStep: () =>
+    set((state) => ({
+      previousStep: state.step, // Update previousStep
+      step: state.step - 1,
+    })),
+  goToPrevStepTwice: () =>
+    set((state) => ({
+      previousStep: state.step, // Update previousStep
+      step: state.step - 2,
+    })),
+  setToValid: (step) =>
+    set((state) => ({
+      validationArray: state.validationArray.map((item, index) =>
+        index === step ? "valid" : item
+      ),
+    })),
+  setToInvalid: (step) =>
+    set((state) => ({
+      validationArray: state.validationArray.map((item, index) =>
+        index === step ? "invalid" : item
+      ),
+    })),
+  setToInitial: (step) =>
+    set((state) => ({
+      validationArray: state.validationArray.map((item, index) =>
+        index === step ? "initial" : item
+      ),
+    })),
+  setValue: (step, value) =>
+    set((state) => ({
+      valuesArray: state.valuesArray.map((item, index) =>
+        index === step ? value : item
+      ),
+    })),
+  setCurrentValue: (value) =>
+    set((state) => ({
+      currentValue: value,
+    })),
+  resetCurrentValue: () =>
+    set((state) => ({
+      currentValue: null,
+    })),
+}));
 
 const tmpData = [
   {
@@ -121,56 +195,3 @@ const tmpData = [
     question: "Hold on - we're finding providers that best match your needs!",
   },
 ];
-
-const validationArray = createValidityArray(tmpData.length);
-const valuesArray = createValuesArray(tmpData.length);
-
-export const useStore = create((set) => ({
-  step: 0,
-  currentValue: null,
-  previousStep: 0,
-  validationArray: validationArray,
-  valuesArray: valuesArray,
-
-  goToNextStep: () =>
-    set((state) => ({
-      previousStep: state.step, // Update previousStep
-      step: state.step + 1,
-    })),
-  goToPrevStep: () =>
-    set((state) => ({
-      previousStep: state.step, // Update previousStep
-      step: state.step - 1,
-    })),
-  goToPrevStepTwice: () =>
-    set((state) => ({
-      previousStep: state.step, // Update previousStep
-      step: state.step - 2,
-    })),
-  setToValid: (step) =>
-    set((state) => ({
-      validationArray: state.validationArray.map((item, index) =>
-        index === step ? "valid" : item
-      ),
-    })),
-  setToInvalid: (step) =>
-    set((state) => ({
-      validationArray: state.validationArray.map((item, index) =>
-        index === step ? "invalid" : item
-      ),
-    })),
-  setValue: (step, value) =>
-    set((state) => ({
-      valuesArray: state.valuesArray.map((item, index) =>
-        index === step ? value : item
-      ),
-    })),
-  setCurrentValue: (value) =>
-    set((state) => ({
-      currentValue: value,
-    })),
-  resetCurrentValue: () =>
-    set((state) => ({
-      currentValue: null,
-    })),
-}));

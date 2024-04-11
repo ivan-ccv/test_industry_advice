@@ -11,11 +11,39 @@ const MultiSelectInput = ({
   fieldValue,
   step,
   setToInvalid,
+  currentValueValid,
+  setToInitial,
+  setQuestionVersion,
 }) => {
-  const [selectedOptions, setSelectedOptions] = useState([fieldValue]); // Array to store selected values
+  const [selectedOptions, setSelectedOptions] = useState(
+    fieldValue ? fieldValue : []
+  ); // Array to store selected values
+
+  const [validSelf, setValidSelf] = useState("inital");
 
   useEffect(() => {
-    if (fieldValue !== null) {
+    if (validSelf === "initial" && currentValueValid === "invalid") {
+      setValidSelf("invalid");
+      setToInvalid(step);
+    }
+  }, [validSelf, currentValueValid]);
+
+  useEffect(() => {
+    if (currentValueValid !== "valid" && currentValueValid !== "invalid")
+      setToInitial(step);
+  }, [step]);
+
+  useEffect(() => {
+    if (currentValueValid === "invalid") setValidSelf("invalid");
+  }, [currentValueValid]);
+
+  useEffect(() => {
+    if (currentValueValid !== "valid" && currentValueValid !== "invalid")
+      setToInitial(step);
+  }, [step]);
+
+  useEffect(() => {
+    if (fieldValue) {
       const updatedOptions = [...fieldValue];
       setSelectedOptions(updatedOptions);
       setCurrentValue(updatedOptions);
@@ -23,10 +51,14 @@ const MultiSelectInput = ({
   }, [fieldValue]);
 
   useEffect(() => {
-    if (selectedOptions.length > 1) {
-      setToValid(step);
-    } else {
-      setToInvalid(step);
+    if (validSelf !== "inital") {
+      if (selectedOptions.length > 0) {
+        setValidSelf("valid");
+        setToValid(step);
+      } else {
+        setValidSelf("invalid");
+        setToInvalid(step);
+      }
     }
   }, [selectedOptions]);
 
@@ -40,10 +72,11 @@ const MultiSelectInput = ({
       const index = updatedOptions.indexOf(value); // Find index of deselected option
       updatedOptions.splice(index, 1); // Remove deselected option
     }
-
+    updatedOptions.length > 0 ? setValidSelf("valid") : setValidSelf("invalid");
     setSelectedOptions(updatedOptions);
     setCurrentValue(updatedOptions);
     setValue(step, updatedOptions); // Pass updated options to the onClick function
+    setQuestionVersion(updatedOptions);
   };
 
   return (
@@ -55,7 +88,11 @@ const MultiSelectInput = ({
       <div>
         {options.map((option, index) => (
           <div key={index} className='w-full'>
-            <label className='p-3 border h-[48px] bg-[#f9f9f9] font-bold border-gray-300 mb-3 rounded-md w-full inline-flex items-center cursor-pointer hover:shadow-md accent-[#5ec2e6] hover:border-[#5EC2E6] transition-all checked:bg-[#5EC2E6] has-[:checked]:border-[#5EC2E6] has-[:checked]:bg-blue-50'>
+            <label
+              className={`p-3 text-[14px] border h-[50px] bg-[#f9f9f9] font-bold border-gray-300 mb-3 rounded-[4px] w-full inline-flex items-center cursor-pointer hover:shadow-md accent-[#5ec2e6] hover:border-[#5EC2E6] transition-all checked:bg-[#5EC2E6] has-[:checked]:border-[#5EC2E6] has-[:checked]:shadow-custom_hover has-[:checked]:bg-blue-50 ${
+                validSelf === "invalid" && "!border-[#f9624e] "
+              }`}
+            >
               <input
                 type='checkbox'
                 value={optionValues[index]} // Use either provided values or options
@@ -87,6 +124,11 @@ const MultiSelectInput = ({
           </div>
         ))}
       </div>
+      {validSelf === "invalid" && (
+        <p className='text-[#f9624e] mt-[15px] font-normal  '>
+          This field is required
+        </p>
+      )}
     </div>
   );
 };

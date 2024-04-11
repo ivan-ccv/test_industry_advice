@@ -3,15 +3,16 @@ import "./animation.css";
 
 const ProgressBar = ({ currentStep, totalSteps }) => {
   const [percentage, setPercentage] = useState(0);
-  const [showRealBar, setShowRealBar] = useState(false);
+  const [showRealBar, setShowRealBar] = useState(true);
+  //const [showRealBar, setShowRealBar] = useState(false);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowRealBar(true);
-    }, 2700);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setShowRealBar(true);
+  //   }, 2700);
 
-    return () => clearTimeout(timer);
-  }, []);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
   useEffect(() => {
     if (currentStep > totalSteps) {
@@ -26,21 +27,21 @@ const ProgressBar = ({ currentStep, totalSteps }) => {
   return (
     <>
       {showRealBar === true && (
-        <div className='flex items-center justify-center h-6  bg-[#F7F7F7] my-3 mb-5 w-full relative  overflow-hidden'>
+        <div className='flex items-center justify-center  h-[25px]  bg-[#F7F7F7] my-3 md:mb-6 mb-7 w-full relative  overflow-hidden'>
           <div
             className={` h-full  bg-[#39DA95] transition-all duration-300 absolute left-0 `}
             style={{ width: `${percentage}%` }}
           />
-          <span className='text-center text-xs font-medium text-gray-500 z-10'>
+          <span className='text-center text-[11px] font-medium text-gray-500 z-10'>
             Progress: {percentage}%
           </span>
         </div>
       )}
-      {showRealBar === false && (
+      {/* {showRealBar === false && (
         <div className='flex items-center justify-center h-8 bg-[#F7F7F7] my-3 w-full relative rounded-lg overflow-hidden'>
           <div className='h-full absolute  bg-[#39DA95] left-0  w-1/4 moving-element ' />
         </div>
-      )}
+      )} */}
     </>
   );
 };

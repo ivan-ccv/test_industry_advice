@@ -7,19 +7,25 @@ const StringInput = ({
   setToInvalid,
   setValue,
   goToNextStep,
-  typeOfValue,
+  typeBre,
   icon,
   quote,
   placeholder,
   regex,
   setCurrentValue,
+  setToInitial,
+  currentValueValid,
+  setValueAboveToInvalid,
+  setValueAboveToValid,
 }) => {
   const [inputValue, setInputValue] = useState(fieldValue);
   const [validSelf, setValidSelf] = useState("inital");
 
   useEffect(() => {
-    if (fieldValue !== null) checkInputValidity(inputValue);
-  }, []);
+    if (fieldValue !== null) {
+      checkInputValidity(inputValue);
+    }
+  }, [inputValue]);
 
   useEffect(() => {
     setCurrentValue(inputValue);
@@ -29,20 +35,32 @@ const StringInput = ({
     if (validSelf === "valid") {
       setValue(step, inputValue);
       setToValid(step);
-      goToNextStep();
+      if (goToNextStep) {
+        goToNextStep();
+      }
     }
   };
+  useEffect(() => {
+    if (currentValueValid !== "valid" && currentValueValid !== "invalid")
+      setToInitial(step);
+  }, [step]);
+  // CHANGE
+  useEffect(() => {
+    if (currentValueValid === "invalid" && validSelf !== "valid")
+      setValidSelf("invalid");
+  }, [currentValueValid, validSelf]);
 
   useEffect(() => {
     if (validSelf === "valid") {
       setToValid(step);
-    } else {
+    } else if (validSelf === "invalid") {
       setToInvalid(step);
     }
   }, [validSelf, step]);
 
   const handleChange = (e) => {
     setInputValue(e.target.value);
+    setValue(step, e.target.value);
     checkInputValidity(e.target.value);
   };
 
@@ -52,7 +70,15 @@ const StringInput = ({
 
       const isValid = pattern.test(value);
 
-      setValidSelf(isValid ? "valid" : "not valid");
+      if (setValueAboveToValid && isValid) {
+        setValueAboveToValid();
+        console.log("valid trigger" + value);
+      }
+      if (setValueAboveToInvalid && !isValid) {
+        setValueAboveToInvalid();
+        console.log("invalid trigger");
+      }
+      setValidSelf(isValid ? "valid" : "invalid");
     } else {
       setValidSelf("initial");
     }
@@ -83,22 +109,29 @@ const StringInput = ({
 
   return (
     <>
+      {/* <p className='z-100 fixed top-60 left-52 '>VALUE:{typeBre}</p> */}
+      {/* <div className='fixed top-5 left-5 bg-red-400 h-32 w-44'>
+        <h2 className='absolute top-[0px]'>INPUT:{inputValue}</h2>
+        <h2 className='absolute top-[20px]'>field:{fieldValue}</h2>
+        <h2 className='absolute top-[40px]'>CURRENT:{fieldValue}</h2>
+        <h2 className='absolute top-[60px]'>SLEF:{validSelf}</h2>
+        <h2 className='absolute top-[80px]'>GLOBAL{currentValueValid}</h2>
+      </div> */}
       <div className='h-min  absolute top-0 left-0 w-full'>
-        {/* <h2 className='absolute top-[-3px]'>{currentValue}</h2> */}
         <div className='input-container relative'>
           <input
-            type={typeOfValue}
+            type={typeBre}
             value={inputValue}
             onChange={handleChange}
             // placeholder={` ${placeholder.toLowerCase()}`}
             placeholder={` ${placeholder}`}
             className={`appearance-none block w-full bg-[#f9f9f9] text-gray-700 font-bold border peer border-gray-200 rounded pb-3 pt-6 pl-10 leading-tight focus:outline-none focus:bg-white focus:border-[#5EC2E6]
-             ${validSelf === "not valid" && "border-red-500"}  ${
+             ${validSelf === "invalid" && "border-red-500"}  ${
               validSelf === "valid" && "border-[#5EC2E6]"
             } `}
           />
           <div
-            className={`bg-[#5EC2E6] rounded-full p-[4px]  h-5 w-5 absolute right-3 bottom-5 z-10 ${
+            className={`bg-[#5EC2E6] rounded-full p-[4px]  h-5 w-5 absolute right-5 bottom-5 z-10 ${
               validSelf === "valid" ? "" : "hidden"
             }`}
           >
@@ -111,8 +144,8 @@ const StringInput = ({
             </svg>
           </div>
           <div
-            className={`bg-red-400 rounded-full p-[4px]  h-5 w-5 absolute right-3 bottom-5 z-10 flex items-center peer-focus:hidden
-             justify-center ${validSelf === "not valid" ? "" : "hidden"}`}
+            className={`bg-[#f9624e] rounded-full p-[4px]  h-[22px] w-[22px] absolute right-5 bottom-[18px] z-10 flex items-center peer-focus:hidden
+             justify-center ${validSelf === "invalid" ? "" : "hidden"}`}
           >
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -123,23 +156,23 @@ const StringInput = ({
             </svg>
           </div>
           <div
-            className={`absolute left-3 top-1 text-xs font-bold  peer-focus:text-[#5EC2E6] 
-              ${validSelf === "not valid" && "text-red-500"} *: ${
+            className={`absolute left-3 top-2 text-[11px] font-bold  peer-focus:text-[#5EC2E6] 
+              ${validSelf === "invalid" && "text-[#f9624e]"} *: ${
               validSelf === "valid" && "text-[#5EC2E6]"
             } `}
           >
             {quote}
           </div>
           <div
-            className={`[&>svg]:h-6 absolute left-3 bottom-3 peer-focus:fill-[#5EC2E6] 
-              ${validSelf === "not valid" && "fill-red-400"}
-               ${validSelf === "valid" && "fill-blue-[#5EC2E6]"}`}
+            className={`[&>svg]:h-6 absolute left-3 bottom-[11px] peer-focus:fill-[#5EC2E6] 
+              ${validSelf === "invalid" && "fill-[#f9624e]"}
+               ${validSelf === "valid" && "fill-[#5EC2E6]"}`}
           >
             {icon}
           </div>
-          {validSelf === "not valid" && (
-            <p className='text-sm ml-2 absolute text-red-400 font-bold peer-focus:hidden'>
-              Not valid
+          {validSelf === "invalid" && (
+            <p className='text-xs ml-2 mt-[5px] absolute text-[#d32f2f]  peer-focus:hidden'>
+              Please enter a valid {quote}
             </p>
           )}
         </div>

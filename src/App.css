@@ -1,6 +1,35 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+.ripple_button {
+  position: relative;
+  overflow: hidden;
+  transition: background 400ms;
+  color: #fff;
+}
+span.ripple {
+  position: absolute; /* The absolute position we mentioned earlier */
+  border-radius: 50%;
+  transform: scale(0);
+  animation: ripple 900ms linear;
+  background-color: rgba(230, 148, 34, 0.6);
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
 .body {
   font-family: "Roboto", sans-serif;
   background-color: #ffffff;
+}
+input::placeholder {
+  font-weight: 300;
+  font-size: 13px;
 }
 .fade-enter-left {
   opacity: 0;
