@@ -454,6 +454,15 @@ const Form = ({ data }) => {
       </div>
       <RemainingTime currentStep={stepBre} totalSteps={tmpData.length} />
       {stepBre === tmpData.length - 1 && <MapDisplay map={mappedData} />}
+      {stepBre === tmpData.length - 1 && (
+        <input
+          type='hidden'
+          className='hidden'
+          name='xxTrustedFormCertUrl'
+          id='xxTrustedFormCertUrl_0'
+          value='https://cert.trustedform.com/454a35b802f3e7b63ffabb4efedb7c6ebe67886c'
+        />
+      )}
     </div>
   );
 };
