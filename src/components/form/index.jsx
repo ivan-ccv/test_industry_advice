@@ -13,6 +13,8 @@ import ImageComponent from "../inputs/image-component/";
 import BubbleHead from "../bubble-head";
 import ProgressBar from "../progress-bar";
 import RemainingTime from "../remaining-time";
+import TrustedForm from "../trustedForm";
+import JornayaForm from "../jornayaForm";
 
 import {
   extractQuestions,
@@ -28,6 +30,9 @@ import RadioInputImages from "../inputs/radio-with-images";
 import MapDisplay from "../map-display";
 
 const Form = ({ data }) => {
+
+
+  const myData = { name: 'John Doe', age: 30 };
   const initialQuestion =
     "Hey, I'm James. I'm here to help you find a Storage Container Solution that suits your business or home, and budget. Let's get started!";
 
@@ -111,6 +116,24 @@ const Form = ({ data }) => {
   };
 
   const buttonRef = useRef(null);
+
+//   useEffect(() => {
+//     const tf = document.createElement('script');
+//     tf.type = 'text/javascript';
+//     tf.async = true;
+//     tf.src =
+//         (window.location.protocol === 'https:' ? 'https' : 'http') +
+//         '://api.trustedform.com/trustedform.js?field=xxTrustedFormCertUrl&ping_field=xxTrustedFormPingUrl&invert_field_sensitivity=true&l=' +
+//         new Date().getTime() +
+//         Math.random();
+//     const s = document.getElementsByTagName('script')[0];
+//     s.parentNode.insertBefore(tf, s);
+
+    
+//     return () => {
+//         tf.remove();
+//     };
+// }, []);
 
   useEffect(() => {
     const handleClick = (event) => {
@@ -363,6 +386,7 @@ const Form = ({ data }) => {
           {tmpData[stepBre].question}
         </p>
       )}
+     
       <div
         style={{
           height: heightCalculator(tmpData[stepBre].type),
@@ -401,6 +425,7 @@ const Form = ({ data }) => {
         <div className='flex'>
           {stepBre > 0 && (
             <button
+            type="button"
               disabled={stepBre === 0}
               onClick={() => {
                 resetCurrentValue();
@@ -428,6 +453,7 @@ const Form = ({ data }) => {
           )}
 
           <button
+          type="button"
             ref={buttonRef}
             className={`ripple_button p-2 font-bold  md:text-[18px] text-[17px] bg-[#fea122] rounded-md  hover:shadow-big_button_hover shadow-big_button h-[45px] md:h-[55px]  box-border text-white transition-all duration-300 disabled:bg-gray-400 ${
               stepBre === 0 ? "w-full" : " w-full ml-[10px]"
@@ -453,16 +479,11 @@ const Form = ({ data }) => {
         </div>
       </div>
       <RemainingTime currentStep={stepBre} totalSteps={tmpData.length} />
+      
       {stepBre === tmpData.length - 1 && <MapDisplay map={mappedData} />}
-      {stepBre === tmpData.length - 1 && (
-        <input
-          type='hidden'
-          className='hidden'
-          name='xxTrustedFormCertUrl'
-          id='xxTrustedFormCertUrl_0'
-          value='https://cert.trustedform.com/454a35b802f3e7b63ffabb4efedb7c6ebe67886c'
-        />
-      )}
+      {stepBre === tmpData.length - 1 && <TrustedForm data={mappedData} />}
+      {stepBre === tmpData.length - 1 && <JornayaForm data={mappedData} />}
+      
     </div>
   );
 };
